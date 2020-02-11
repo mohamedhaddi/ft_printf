@@ -8,8 +8,5 @@
 
 int	main()
 {
-	char *str = "51023";
-	//ft_printf("lmao %d", 5);
-	//printf("%.*d", 2147483647, 5);
-	printf("%4s", "test");
+	printf("this is %-3s", "fo");
 }
