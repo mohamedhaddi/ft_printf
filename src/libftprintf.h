@@ -3,6 +3,11 @@
 
 # include <stdarg.h>
 
+typedef struct s_arg {
+	char *datatype;
+	void *data;
+} t_arg;
+
 int minusflag_found;
 int zeroflag_found;
 int precisiondot_found;
@@ -14,7 +19,6 @@ int mfwidth_val; // about "mfwidth_found": it's not a thing
 				 // if we justified by 0 nothing will happen
 va_list ap;
 char specifier;
-char *output; // will contain the argument and apply formatting to it
 int arg_len; // how many digits or characters the argument has
 int counter;
 

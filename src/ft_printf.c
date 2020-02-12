@@ -1,29 +1,42 @@
 #include "libft/libft.h"
 #include "libftprintf.h"
 
-char	*get_arg(char specifier) // this is probably not gonna work correctly, functions have to be made. will get back to it later
+t_arg	get_arg(char specifier)
 {
+	t_arg arg;
+
 	if (specifier == 'd' || specifier == 'i')
-		return ft_itoa(va_arg(ap, int));
+	{
+		arg->datatype = "int";
+		arg->data = va_arg(ap, int);
+		return arg;
+	}
 	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c')
-		return ft_itoa(va_arg(ap, unsigned int));	// itoa should probably be replaced with a new function that converts hexadecimal to ascii
+	{
+		arg->datatype = "unsigned int";
+		arg->data = va_arg(ap, unsigned int);
+		return arg;
+	}
 	else if (specifier == 'p')
-		return va_arg(ap, void *);
+	{
+		arg->datatype = "void *";
+		arg->data = va_arg(ap, void *);
+		return arg;
+	}
 	else if (specifier == 's')
-		return va_arg(ap, char *);
+	{
+		arg->datatype = "char *";
+		arg->data = va_arg(ap, char *);
+		return arg;
+	}
 }
 
-char	*diuxx_precision(char *output, int precision) // adds precision number of zeros to the beginning of the argument
+int	get_diuxxs_len(t_arg arg)
 {
-	char *zeros;
-	int i;
-
-	i = 0;
-	zeros = malloc(precision + 1);
-	ft_bzero(zeros, precision + 1);
-	while (i < precision)
-		zeros[i++] = '0';
-	return ft_strjoin(zeros, output); // memory leak...
+	if (arg->datatype == "int" || arg->datatype == "unsigned int")
+		return arg->data < 0 ? ft_ulen(-arg->data) + 1 : ft_ulen(arg->data);
+	else if (arg->datatype == "char *")
+		return ft_strlen(arg->data);
 }
 
 int	isspecifier(char str)
@@ -64,7 +77,7 @@ int num_check(char *str) // checks the nature of the precision or mfw's values a
 int	ft_printf(const char *s, ...)
 {
 	char *str; // this will point to the string literal and we'll loop through it
-
+	t_arg arg; // gets the arguments
 	// all the following variables are declared in libftprintf.h and they serve to collect all the data that exist after each % sign.
 	// there are two types of this data:
 		// boolean: for flags (-; 0; .;) and mfw, and it is either: 1 (found) or 0 (not found)
@@ -114,19 +127,23 @@ int	ft_printf(const char *s, ...)
 
 			/* precision management begins here */
 
-			output = ft_strdup(get_arg(specifier)); // with the help of va_arg (in get_arg) we get the argument according to the specifier we found, and assign to the string "output" which will change later after formatting.
-			arg_len = ft_strlen(output);
+			arg = get_arg(specifier);
+			arg_len = get_diuxxs_len(arg); // add c and p ? 
 			if (precisiondot_found)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 				{
-					if (arg_len < precision_val)
-						output = diuxx_precision(output, precision_val - arg_len);
+					 if (arg_len < precision_val)
+						// replace precision val with "precision_val - arg_len";
+					// else
+						// precision doesn't exist
 				}
 				else if (specifier == 's')
 				{
 					if (arg_len > precision_val)
-						output = ft_substr(output, 0, precision_val); // memory leak...
+						// precision_val stays the same, so probably remove this condition?
+					// else
+						// precision_val = arg_len
 				} // if other specifiers: undefined behavior
 			}
 
