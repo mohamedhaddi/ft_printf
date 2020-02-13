@@ -4,8 +4,10 @@
 # include <stdarg.h>
 
 typedef struct s_arg {
-	char *datatype;
-	void *data;
+	int intdata;
+	unsigned int uintdata;
+	char *stringdata;
+	void *pointerdata;
 } t_arg;
 
 int minusflag_found;

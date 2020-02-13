@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:57:17 by mhaddi            #+#    #+#             */
-/*   Updated: 2019/11/05 18:35:01 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/13 10:41:29 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int					ft_tolower(int c);
 int					ft_toupper(int c);
 int					ft_iswhitespace(int c);
 int					ft_lstsize(t_list *lst);
+int					ft_ulen(unsigned int n);
 int					ft_atoi(const char *str);
 size_t				ft_strlen(const char *s);
 t_list				*ft_lstlast(t_list *lst);

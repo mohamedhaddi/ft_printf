@@ -7,39 +7,37 @@ t_arg	get_arg(char specifier)
 
 	if (specifier == 'd' || specifier == 'i')
 	{
-		arg->datatype = "int";
-		arg->data = va_arg(ap, int);
+		arg.intdata = va_arg(ap, int);
 		return arg;
 	}
 	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c')
 	{
-		arg->datatype = "unsigned int";
-		arg->data = va_arg(ap, unsigned int);
-		return arg;
-	}
-	else if (specifier == 'p')
-	{
-		arg->datatype = "void *";
-		arg->data = va_arg(ap, void *);
+		arg.uintdata = va_arg(ap, unsigned int);
 		return arg;
 	}
 	else if (specifier == 's')
 	{
-		arg->datatype = "char *";
-		arg->data = va_arg(ap, char *);
+		arg.stringdata = va_arg(ap, char *);
+		return arg;
+	}
+	else // if specifier == 'p'
+	{
+		arg.pointerdata = va_arg(ap, void *);
 		return arg;
 	}
 }
 
-int	get_len(t_arg arg)
+int	get_len(t_arg arg, char specifier)
 {
-	if (arg->datatype == "int" || arg->datatype == "unsigned int")
-		return arg->data < 0 ? ft_ulen(-arg->data) + 1 : ft_ulen(arg->data);
-	else if (arg->datatype == "char *")
-		return ft_strlen(arg->data);
-	// else if (arg->datatype == "void *")
-		// return;
-	else if (arg->datatype == "char")
+	if (specifier == 'd' || specifier == 'i')
+		return arg.intdata < 0 ? ft_ulen(-1*(int)arg.intdata) + 1 : ft_ulen(arg.intdata);
+	else if (specifier == 'u')
+		return ft_ulen(arg.uintdata);
+	else if (specifier == 's')
+		return ft_strlen(arg.stringdata);
+	// else if (specifier == 'x' || specifier == 'X' || specifier == 'p')
+	//	return; how tf do i count the length?
+	else // if (specifier == 'c')
 		return 1;
 }
 
@@ -132,23 +130,21 @@ int	ft_printf(const char *s, ...)
 			/* precision management begins here */
 
 			arg = get_arg(specifier);
-			arg_len = get_len(arg); // add c and p ?
+			arg_len = get_len(arg);
 			if (precisiondot_found)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 				{
-					 if (arg_len < precision_val)
-						// replace precision val with "precision_val - arg_len";
-					// else
-						// precision doesn't exist
+					 if (precision_val > arg_len)
+						precision_val = precision_val - arg_len;
+					else
+						precision_val = -1;
 				}
 				else if (specifier == 's')
 				{
-					if (arg_len > precision_val)
-						// precision_val stays the same, so probably remove this condition?
-					// else
-						// precision_val = arg_len
-				} // if other specifiers: undefined behavior
+					if (precision_val >= arg_len)
+						precision_val = -1;
+				} // and other specifiers' precision is undefined behavior
 			}
 
 			/* precision management ends here */
@@ -158,10 +154,8 @@ int	ft_printf(const char *s, ...)
 			/* minimum field width management ends here */
 
 			// don't forget to count the final output's characters
+				/* formatting ends here */
 		}
-
-		/* formatting ends here */
-
 		else
 			ft_putchar_fd(*(str++), 1);
 
