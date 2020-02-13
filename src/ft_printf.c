@@ -150,12 +150,72 @@ int	ft_printf(const char *s, ...)
 			/* precision management ends here */
 
 			/* minimum field width management begins here */
-				/* code */
+
+			if (zeroflag_found) // setting the padding character (0 or space)
+			{
+				padding_char = '0';
+				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precision_val >= 0) || minusflag_found)
+					padding_char = ' ';
+			}
+
+			mfwidth_val -= (precision_val >= 0) ? (arg_len + precision_val) : arg_len;
+			if (!minusflag_found)
+			{
+				while (mfwidth_val-- > 0) // mfw output
+					ft_putchar_fd(padding_char, 1);
+
+				/* precision and arg output begins here */
+
+				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
+				{
+					while (precision_val-- > 0)
+						ft_putchar_fd('0', 1);
+
+					/* diuxX arg output begins here */
+
+					if (specifier == 'd')
+					else if (specifier == 'i')
+					else if (specifier == 'u')
+					else if (specifier == 'x')
+					else // if specifier == X
+
+					/* diuxX arg output ends here */
+
+				}
+				else if (specifier == 's')
+					ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
+				else
+				{
+
+					/* c & p arg output begins here */
+
+					if (specifier == 'c')
+					else if (specifier == 'p')
+
+					/* c & p arg output ends here */
+
+				}
+
+				/* precision and arg output ends here */
+
+			}
+			else
+			{
+				/* precision and arg output begins here */
+					/* same code (function) */
+				/* precision and arg output ends here */
+
+				while (mfwidth_val-- > 0) // mfw output
+					ft_putchar_fd(padding_char, 1);
+			}
+
 			/* minimum field width management ends here */
 
 			// don't forget to count the final output's characters
-				/* formatting ends here */
 		}
+
+		/* formatting ends here */
+
 		else
 			ft_putchar_fd(*(str++), 1);
 
