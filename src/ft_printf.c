@@ -31,12 +31,16 @@ t_arg	get_arg(char specifier)
 	}
 }
 
-int	get_diuxxs_len(t_arg arg)
+int	get_len(t_arg arg)
 {
 	if (arg->datatype == "int" || arg->datatype == "unsigned int")
 		return arg->data < 0 ? ft_ulen(-arg->data) + 1 : ft_ulen(arg->data);
 	else if (arg->datatype == "char *")
 		return ft_strlen(arg->data);
+	// else if (arg->datatype == "void *")
+		// return;
+	else if (arg->datatype == "char")
+		return 1;
 }
 
 int	isspecifier(char str)
@@ -128,7 +132,7 @@ int	ft_printf(const char *s, ...)
 			/* precision management begins here */
 
 			arg = get_arg(specifier);
-			arg_len = get_diuxxs_len(arg); // add c and p ? 
+			arg_len = get_len(arg); // add c and p ?
 			if (precisiondot_found)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
