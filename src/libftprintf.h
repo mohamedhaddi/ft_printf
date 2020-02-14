@@ -7,7 +7,6 @@ typedef struct s_arg {
 	int intdata;
 	unsigned int uintdata;
 	char *stringdata;
-	void *pointerdata;
 } t_arg;
 
 int minusflag_found;

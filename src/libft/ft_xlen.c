@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ulen.c                                          :+:      :+:    :+:   */
+/*   ft_xlen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/14 09:41:42 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/14 09:41:36 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_ulen(unsigned int n)
+int	ft_xlen(unsigned int n)
 {
 	int				i;
 	unsigned int	nb;
@@ -21,7 +21,7 @@ int	ft_ulen(unsigned int n)
 	nb = n;
 	while (nb > 0)
 	{
-		nb = nb / 10;
+		nb = nb / 16;
 		i++;
 	}
 	return (n == 0) ? 1 : i;

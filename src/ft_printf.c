@@ -1,6 +1,43 @@
 #include "libft/libft.h"
 #include "libftprintf.h"
 
+void	jusitfy(int mfwidth_val, char padding_char)
+{
+	while (mfwidth_val-- > 0)
+		ft_putchar_fd(padding_char, 1);
+}
+
+void	format(char specifier, int precision_val, t_arg arg)
+{
+	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
+	{
+		/* precision begins here */
+		while (precision_val-- > 0)
+			ft_putchar_fd('0', 1);
+		/* precision ends here */
+
+		/* diuxX arg output begins here */
+		if (specifier == 'd' || specifier == 'i')
+			ft_putnbr_fd(arg.intdata, 1);
+		else if (specifier == 'u')
+			ft_putui_fd(arg.uintdata, 1);
+		//else if (specifier == 'x') how to print hexa????
+		//else // if specifier == X
+		/* diuxX arg output ends here */
+
+	}
+	else if (specifier == 's')
+		ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
+	else
+	{
+		/* c & p arg output begins here */
+		if (specifier == 'c')
+			ft_putchar_fd(arg.uintdata, 1);
+		// else if (specifier == 'p') how to print hexa????
+		/* c & p arg output ends here */
+	}
+}
+
 t_arg	get_arg(char specifier)
 {
 	t_arg arg;
@@ -10,19 +47,14 @@ t_arg	get_arg(char specifier)
 		arg.intdata = va_arg(ap, int);
 		return arg;
 	}
-	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c')
+	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c' || specifier == 'p')
 	{
 		arg.uintdata = va_arg(ap, unsigned int);
 		return arg;
 	}
-	else if (specifier == 's')
+	else // if (specifier == 's')
 	{
 		arg.stringdata = va_arg(ap, char *);
-		return arg;
-	}
-	else // if specifier == 'p'
-	{
-		arg.pointerdata = va_arg(ap, void *);
 		return arg;
 	}
 }
@@ -35,8 +67,10 @@ int	get_len(t_arg arg, char specifier)
 		return ft_ulen(arg.uintdata);
 	else if (specifier == 's')
 		return ft_strlen(arg.stringdata);
-	// else if (specifier == 'x' || specifier == 'X' || specifier == 'p')
-	//	return; how tf do i count the length?
+	else if (specifier == 'x' || specifier == 'X')
+		return ft_xlen(arg.uintdata);
+	else if (specifier == 'p')
+		return ft_xlen(arg.uintdata) + 2;
 	else // if (specifier == 'c')
 		return 1;
 }
@@ -95,18 +129,14 @@ int	ft_printf(const char *s, ...)
 	while (*str)
 	{
 		counter++;
-
 		/* all of the following code will be in a separate function
 		 * containing calls to more separate functions */
 
 		/* formatting begins here */
-
 		if (*str == '%')
 		{
 			str++;
-
 			/* data collection begins here */
-
 			while (!isspecifier(*str))	// while the conversion specifier is not found, collect all data in between the '%' and the specifier.
 			{
 				minusflag_found = (*str == '-') ? 1 : minusflag_found;
@@ -124,13 +154,11 @@ int	ft_printf(const char *s, ...)
 			if (precisiondot_found && precision_val < 0)
 				precision_val = -1; // if the - sign is present in the precision value, then we cancel the precision.
 			specifier = *(str++);	// getting out of the while loop means we've found the specifier. we assign it and then increment to the next character.
-
 			/* data collection ends here */
 
 			/* precision management begins here */
-
 			arg = get_arg(specifier);
-			arg_len = get_len(arg);
+			arg_len = get_len(arg, specifier);
 			if (precisiondot_found)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
@@ -146,74 +174,40 @@ int	ft_printf(const char *s, ...)
 						precision_val = -1;
 				} // and other specifiers' precision is undefined behavior
 			}
-
 			/* precision management ends here */
 
 			/* minimum field width management begins here */
-
 			if (zeroflag_found) // setting the padding character (0 or space)
 			{
 				padding_char = '0';
 				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precision_val >= 0) || minusflag_found)
 					padding_char = ' ';
 			}
-
 			mfwidth_val -= (precision_val >= 0) ? (arg_len + precision_val) : arg_len;
 			if (!minusflag_found)
 			{
-				while (mfwidth_val-- > 0) // mfw output
-					ft_putchar_fd(padding_char, 1);
+				/* justification begins here */
+				jusitfy(mfwidth_val, padding_char);
+				/* justification ends here */
 
 				/* precision and arg output begins here */
-
-				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
-				{
-					while (precision_val-- > 0)
-						ft_putchar_fd('0', 1);
-
-					/* diuxX arg output begins here */
-
-					if (specifier == 'd')
-					else if (specifier == 'i')
-					else if (specifier == 'u')
-					else if (specifier == 'x')
-					else // if specifier == X
-
-					/* diuxX arg output ends here */
-
-				}
-				else if (specifier == 's')
-					ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
-				else
-				{
-
-					/* c & p arg output begins here */
-
-					if (specifier == 'c')
-					else if (specifier == 'p')
-
-					/* c & p arg output ends here */
-
-				}
-
+				format(specifier, precision_val, arg);
 				/* precision and arg output ends here */
-
 			}
 			else
 			{
 				/* precision and arg output begins here */
-					/* same code (function) */
+				format(specifier, precision_val, arg);
 				/* precision and arg output ends here */
 
-				while (mfwidth_val-- > 0) // mfw output
-					ft_putchar_fd(padding_char, 1);
+				/* justification begins here */
+				jusitfy(mfwidth_val, padding_char);
+				/* justification ends here */
 			}
-
 			/* minimum field width management ends here */
 
 			// don't forget to count the final output's characters
 		}
-
 		/* formatting ends here */
 
 		else
