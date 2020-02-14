@@ -1,7 +1,7 @@
 #include "libft/libft.h"
 #include "libftprintf.h"
 
-// don't forget to also handle %
+// don't forget to also handle %, search and test this case well
 
 void	jusitfy(int mfwidth_val, char padding_char)
 {
@@ -13,6 +13,10 @@ void	format(char specifier, int precision_val, t_arg arg)
 {
 	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 	{
+		if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
+			ft_putchar_fd('-', 1);
+		// if (plus_found)
+		//	ft_putchar_fd('+', 1);
 		/* precision begins here */
 		while (precision_val-- > 0)
 			ft_putchar_fd('0', 1);
@@ -20,7 +24,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 
 		/* diuxX arg output begins here */
 		if (specifier == 'd' || specifier == 'i')
-			ft_putnbr_fd(arg.intdata, 1);
+			ft_putnbr_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
 		else if (specifier == 'u')
 			ft_putui_fd(arg.uintdata, 1);
 		//else if (specifier == 'x') how to print hexa????
@@ -42,8 +46,6 @@ void	format(char specifier, int precision_val, t_arg arg)
 
 t_arg	get_arg(char specifier)
 {
-	t_arg arg;
-
 	if (specifier == 'd' || specifier == 'i')
 	{
 		arg.intdata = va_arg(ap, int);
@@ -64,7 +66,7 @@ t_arg	get_arg(char specifier)
 int	get_len(t_arg arg, char specifier)
 {
 	if (specifier == 'd' || specifier == 'i')
-		return arg.intdata < 0 ? ft_ulen(-1*(int)arg.intdata) + 1 : ft_ulen(arg.intdata);
+		return arg.intdata < 0 ? ft_ulen(-1*arg.intdata) : ft_ulen(arg.intdata);
 	else if (specifier == 'u')
 		return ft_ulen(arg.uintdata);
 	else if (specifier == 's')
@@ -77,12 +79,12 @@ int	get_len(t_arg arg, char specifier)
 		return 1;
 }
 
-int	isspecifier(char str)
+int	isspecifier(char s)
 {
-	if (str == 'd' || str == 'i' || str == 'u' || str == 'x' || str == 'X'
-			|| str == 'c' || str == 's' || str == 'p' || str == '%')
+	if (s == 'd' || s == 'i' || s == 'u' || s == 'x' || s == 'X'
+			|| s == 'c' || s == 's' || s == 'p' || s == '%')
 	{
-		specifier = str;
+		specifier = s;
 		return (1);
 	}
 	return (0);
@@ -100,32 +102,45 @@ int num_check(char *str) // checks the nature of the precision or mfw's values a
 			num *= -1;
 			minusflag_found = 1;
 		}
-		if (num == 0 && !precisiondot_found)
+		else if (num == 0 && !precisiondot_found)
 			zeroflag_found = 1;
+		else if (precisiondot_found && num < 0)
+			num = -1; // if the - sign is present in the precision value, then we cancel the precision.
 	}
 	else // if the value is a normal number, loop through it all and convert it to int
 	{
 		num = *str - 48;
-		while (ft_isdigit(++*str))
+		while (ft_isdigit(*(++str)))
 			num = (num * 10) + (*str - 48);
 	}
 	return (num);
 }
 
-int	ft_printf(const char *s, ...)
+void	initialize()
 {
-	char *str; // this will point to the string literal and we'll loop through it
-	t_arg arg; // gets the arguments
-	// all the following variables are declared in libftprintf.h and they serve to collect all the data that exist after each % sign.
-	// there are two types of this data:
-		// boolean: for flags (-; 0; .;) and mfw, and it is either: 1 (found) or 0 (not found)
-		// value: minimum field width value; precision value
 	minusflag_found = 0;
+	// plus_found = 0;
 	zeroflag_found = 0;
 	precisiondot_found = 0;
 	mfwidth_val = 0;
 	precision_val = -1; // if a precision is zero, it doesn't mean that there is no precision, it applies a precision of 0, that's why the intialization is set to negative, if there was no precision specified it will be set to negative.
-	counter = 0; // this counts the number of characters that will be printed. this is the value that printf returns.
+	padding_char = ' ';
+
+	arg.intdata = 0;
+	arg.uintdata = 0;
+	arg.stringdata = 0;
+}
+
+int	ft_printf(const char *s, ...)
+{
+	char *str; // this will point to the string literal and we'll loop through it
+	// t_arg arg; // gets the arguments
+	// all the following variables are declared in libftprintf.h and they serve to collect all the data that exist after each % sign.
+	// there are two types of this data:
+		// boolean: for flags (-; 0; .;) and mfw, and it is either: 1 (found) or 0 (not found)
+		// value: minimum field width value; precision value
+	initialize();
+	counter = 0;	 // this counts the number of characters that will be printed. this is the value that printf returns.
 	va_start(ap, s); // makes ap point to the first unnamed argument
 	str = (char *)s;
 	while (*str)
@@ -139,9 +154,10 @@ int	ft_printf(const char *s, ...)
 		{
 			str++;
 			/* data collection begins here */
-			while (!isspecifier(*str))	// while the conversion specifier is not found, collect all data in between the '%' and the specifier.
+			while (*str && !isspecifier(*str))	// while the conversion specifier is not found, collect all data in between the '%' and the specifier.
 			{
 				minusflag_found = (*str == '-') ? 1 : minusflag_found;
+				// plus_found = (*str == '+') ? 1 : plus_found;
 				zeroflag_found = (*str == '0') ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
 				if (ft_isdigit(*str) || *str == '*')
@@ -150,12 +166,17 @@ int	ft_printf(const char *s, ...)
 						precision_val = num_check(str);
 					else
 						mfwidth_val = num_check(str);
+					/* begin incrementing str */
+					if (*str == '*')
+						str++;
+					else
+						while (ft_isdigit(*str))
+							str++;
+					/* end incrementing str */
 				}
-				str++;
+				else
+					str++;
 			}
-			if (precisiondot_found && precision_val < 0)
-				precision_val = -1; // if the - sign is present in the precision value, then we cancel the precision.
-			specifier = *(str++);	// getting out of the while loop means we've found the specifier. we assign it and then increment to the next character.
 			/* data collection ends here */
 
 			/* precision management begins here */
@@ -165,7 +186,7 @@ int	ft_printf(const char *s, ...)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 				{
-					 if (precision_val > arg_len)
+					if (precision_val > arg_len)
 						precision_val = precision_val - arg_len;
 					else
 						precision_val = -1;
@@ -182,11 +203,23 @@ int	ft_printf(const char *s, ...)
 			if (zeroflag_found) // setting the padding character (0 or space)
 			{
 				padding_char = '0';
-				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precision_val >= 0) || minusflag_found)
+				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precisiondot_found) || minusflag_found)
 					padding_char = ' ';
 			}
-			mfwidth_val -= (precision_val >= 0) ? (arg_len + precision_val) : arg_len;
-			if (!minusflag_found)
+			if (mfwidth_val < arg_len) // setting the real mfwidth value depending on the arg and the precision
+				mfwidth_val = 0;
+			else if (mfwidth_val != 0)
+			{
+				if (precision_val >= 0)
+					mfwidth_val -= (mfwidth_val >= arg_len + precision_val) ? arg_len + precision_val : mfwidth_val;
+				else
+					mfwidth_val -= (mfwidth_val >= arg_len) ? arg_len : mfwidth_val;
+				// if (plus_found)
+				// mfwidth_val--;
+				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
+					mfwidth_val--;
+			}
+			if (!minusflag_found) // applying the right justification and then formatting
 			{
 				/* justification begins here */
 				jusitfy(mfwidth_val, padding_char);
@@ -196,7 +229,7 @@ int	ft_printf(const char *s, ...)
 				format(specifier, precision_val, arg);
 				/* precision and arg output ends here */
 			}
-			else
+			else // applying the left justification and then formatting
 			{
 				/* precision and arg output begins here */
 				format(specifier, precision_val, arg);
@@ -205,9 +238,11 @@ int	ft_printf(const char *s, ...)
 				/* justification begins here */
 				jusitfy(mfwidth_val, padding_char);
 				/* justification ends here */
+
 			}
 			/* minimum field width management ends here */
 
+			str++;	// getting out of the while loop means we've found the specifier. we increment to the next character after it.
 			// don't forget to count the final output's characters
 		}
 		/* formatting ends here */
@@ -216,7 +251,11 @@ int	ft_printf(const char *s, ...)
 			ft_putchar_fd(*(str++), 1);
 
 		/* reinitialize data here */
+		initialize();
+
+		/* unglobalize variables that do not need to be global */
 	}
 
+	va_end(ap);
 	return (counter);
 }

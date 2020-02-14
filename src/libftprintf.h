@@ -8,8 +8,9 @@ typedef struct s_arg {
 	unsigned int uintdata;
 	char *stringdata;
 } t_arg;
-
+t_arg arg;
 int minusflag_found;
+// int plus_found;
 int zeroflag_found;
 int precisiondot_found;
 int precision_val;
