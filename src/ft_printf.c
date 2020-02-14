@@ -1,6 +1,8 @@
 #include "libft/libft.h"
 #include "libftprintf.h"
 
+// don't forget to also handle %
+
 void	jusitfy(int mfwidth_val, char padding_char)
 {
 	while (mfwidth_val-- > 0)
