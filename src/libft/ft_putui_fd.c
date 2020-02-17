@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/14 09:55:50 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/17 21:06:47 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int			len_count(unsigned int n)
 		n = n / 10;
 		i++;
 	}
-	return i;
+	return (n == 0) ? 1 : i;
 }
 
 static unsigned int	power(int len)

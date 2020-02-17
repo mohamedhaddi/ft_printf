@@ -23,10 +23,8 @@ void	format(char specifier, int precision_val, t_arg arg)
 		/* precision ends here */
 
 		/* diuxX arg output begins here */
-		if (specifier == 'd' || specifier == 'i')
-			ft_putnbr_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
-		else if (specifier == 'u')
-			ft_putui_fd(arg.uintdata, 1);
+		if (specifier == 'd' || specifier == 'i' || specifier == 'u')
+			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
 		//else if (specifier == 'x') how to print hexa????
 		//else // if specifier == X
 		/* diuxX arg output ends here */
@@ -79,15 +77,22 @@ int	get_len(t_arg arg, char specifier)
 		return 1;
 }
 
-int	isspecifier(char s)
+int	isspecifier(char c)
 {
-	if (s == 'd' || s == 'i' || s == 'u' || s == 'x' || s == 'X'
-			|| s == 'c' || s == 's' || s == 'p' || s == '%')
+	if (c == 'd' || c == 'i' || c == 'u' || c == 'x' || c == 'X'
+			|| c == 'c' || c == 's' || c == 'p' || c == '%')
 	{
-		specifier = s;
+		specifier = c;
 		return (1);
 	}
 	return (0);
+}
+
+int	isflag(char c)
+{
+	if (ft_isdigit(c) || c == '-' || c == '0' || c == '.' || c == '*' || c == '%')
+		return 1;
+	return 0;
 }
 
 int num_check(char *str) // checks the nature of the precision or mfw's values and then converts it to an int
@@ -150,7 +155,7 @@ int	ft_printf(const char *s, ...)
 		 * containing calls to more separate functions */
 
 		/* formatting begins here */
-		if (*str == '%')
+		if (*str == '%' && (isspecifier(*(str + 1)) || isflag(*(str + 1))))
 		{
 			str++;
 			/* data collection begins here */
@@ -158,6 +163,7 @@ int	ft_printf(const char *s, ...)
 			{
 				minusflag_found = (*str == '-') ? 1 : minusflag_found;
 				// plus_found = (*str == '+') ? 1 : plus_found;
+				// %
 				zeroflag_found = (*str == '0') ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
 				if (ft_isdigit(*str) || *str == '*')
@@ -178,6 +184,9 @@ int	ft_printf(const char *s, ...)
 					str++;
 			}
 			/* data collection ends here */
+
+			if (!*str) // maybe the % is at the end of the string
+				break;
 
 			/* precision management begins here */
 			arg = get_arg(specifier);
@@ -248,7 +257,15 @@ int	ft_printf(const char *s, ...)
 		/* formatting ends here */
 
 		else
-			ft_putchar_fd(*(str++), 1);
+		{
+			if (*str != '%') // print normal stuff that is not formatting
+				ft_putchar_fd(*(str++), 1);
+			else // if *str is %, but the next character is neither a flag nor a specifier
+			{
+				*(str + 1) ? ft_putchar_fd(*(++str), 1) : 0; // if next character isn't nul, increment to it and print it.
+				str++;
+			}
+		}
 
 		/* reinitialize data here */
 		initialize();
