@@ -3,8 +3,10 @@
 
 // don't forget to also handle %, search and test this case well
 
-void	jusitfy(int mfwidth_val, char padding_char)
+void	jusitfy(int mfwidth_val, char padding_char, char specifier, t_arg arg)
 {
+	if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0 && padding_char == '0') // if the padding is 0 character, unlike the space character, we show the minus sign first when it's a negative number
+		ft_putchar_fd('-', 1);
 	while (mfwidth_val-- > 0)
 		ft_putchar_fd(padding_char, 1);
 }
@@ -13,7 +15,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 {
 	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 	{
-		if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
+		if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0 && padding_char != '0')
 			ft_putchar_fd('-', 1);
 		// if (plus_found)
 		//	ft_putchar_fd('+', 1);
@@ -231,7 +233,7 @@ int	ft_printf(const char *s, ...)
 			if (!minusflag_found) // applying the right justification and then formatting
 			{
 				/* justification begins here */
-				jusitfy(mfwidth_val, padding_char);
+				jusitfy(mfwidth_val, padding_char, specifier, arg);
 				/* justification ends here */
 
 				/* precision and arg output begins here */
@@ -245,7 +247,7 @@ int	ft_printf(const char *s, ...)
 				/* precision and arg output ends here */
 
 				/* justification begins here */
-				jusitfy(mfwidth_val, padding_char);
+				jusitfy(mfwidth_val, padding_char, specifier, arg);
 				/* justification ends here */
 
 			}
