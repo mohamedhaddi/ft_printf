@@ -170,7 +170,7 @@ int	ft_printf(const char *s, ...)
 				zeroflag_found = (*str == '0' && !precisiondot_found) ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
 				precision_val = (*str == '.' && !ft_isdigit(*(str + 1))) ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default
-				if (*str != '0' && (ft_isdigit(*str) || *str == '*')) // we don't want 0 flag to be counted as one of these numbers
+				if ((*str == '0' && precisiondot_found) || (*str != '0' && (ft_isdigit(*str) || *str == '*'))) // we don't want 0 flag to be counted as one of these numbers, unless the 0 was after the precision dot, then it's not a flag and we want go inside the condition.
 				{
 					if (precisiondot_found)
 						precision_val = *(str - 1) == '-' ? -1 : num_check(str);
