@@ -1,12 +1,15 @@
 #include "libft/libft.h"
 #include "libftprintf.h"
-
+#include <stdio.h>
 // don't forget to also handle %, search and test this case well
 
 void	jusitfy(int mfwidth_val, char padding_char, char specifier, t_arg arg)
 {
 	if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0 && padding_char == '0') // if the padding is 0 character, unlike the space character, we show the minus sign first when it's a negative number
 		ft_putchar_fd('-', 1);
+	if (specifier == 'd' || specifier == 'i' || specifier == 'u') // patches the special case of when d, i or u are equal to 0 and there is a negative value after the precision dot
+		if ((arg.intdata == 0 && arg.uintdata == 0))
+			mfwidth_val = og_mwf;
 	while (mfwidth_val-- > 0)
 		ft_putchar_fd(padding_char, 1);
 }
@@ -30,7 +33,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 		/* diuxX arg output begins here */
 		if ((specifier == 'd' || specifier == 'i') && (arg.intdata != 0 || !og_precision_is_zero)) // for some reason, when the d, i or u are equal to 0 AND the precision value is also 0, printf doesn't print the 0 (value of d, i or u).
 			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
-		if ((specifier == 'u') && (arg.intdata != 0 || !og_precision_is_zero))
+		if ((specifier == 'u') && (arg.uintdata != 0 || !og_precision_is_zero))
 			ft_putui_fd(arg.uintdata, 1);
 		//else if (specifier == 'x') how to print hexa????
 		//else // if specifier == X
@@ -136,6 +139,7 @@ void	initialize()
 	mfwidth_val = 0;
 	precision_val = -1; // if a precision is zero, it doesn't mean that there is no precision, it applies a precision of 0, that's why the intialization is set to negative, if there was no precision specified it will be set to negative.
 	og_precision_is_zero = 0; // patches the special case of when d, i or u are equal to 0 and the precision is also 0
+	og_mwf = 0; // patches the special case of when d, i or u are equal to 0 and there is a negative value after the precision dot
 	padding_char = ' ';
 
 	arg.intdata = 0;
@@ -227,6 +231,9 @@ int	ft_printf(const char *s, ...)
 				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precisiondot_found) || minusflag_found)
 					padding_char = ' ';
 			}
+			if (specifier == 'd' || specifier == 'i' || specifier == 'u') // patches the special case of when d, i or u are equal to 0 and there is a negative value after the precision dot
+				if ((arg.intdata == 0 && arg.uintdata == 0))
+					og_mwf = mfwidth_val;
 			if (mfwidth_val < arg_len || (precisiondot_found && precision_val < 0)) // cancel the mfw if it's less than arg_len OR if the precision_val is negative
 				mfwidth_val = 0;
 			else if (mfwidth_val != 0) // setting the real mfwidth value depending on the arg and the precision
