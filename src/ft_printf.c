@@ -164,7 +164,7 @@ int	ft_printf(const char *s, ...)
 			/* data collection begins here */
 			while (*str && !isspecifier(*str))	// while the conversion specifier is not found, collect all data in between the '%' and the specifier.
 			{
-				minusflag_found = (*str == '-' && !precisiondot_found) ? 1 : minusflag_found;
+				minusflag_found = (*str == '-') ? 1 : minusflag_found;
 				// plus_found = (*str == '+') ? 1 : plus_found;
 				// %
 				zeroflag_found = (*str == '0' && !precisiondot_found) ? 1 : zeroflag_found;
@@ -172,10 +172,10 @@ int	ft_printf(const char *s, ...)
 				precision_val = (*str == '.' && !ft_isdigit(*(str + 1))) ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default
 				if ((*str == '0' && precisiondot_found) || (*str != '0' && (ft_isdigit(*str) || *str == '*'))) // we don't want 0 flag to be counted as one of these numbers, unless the 0 was after the precision dot, then it's not a flag and we want go inside the condition.
 				{
-					if (precisiondot_found)
-						precision_val = *(str - 1) == '-' ? -1 : num_check(str);
+					if (precisiondot_found && *(str - 1) != '-') // if minus flag was found after the precision dot, then that value becomes the mfw value!
+						precision_val = num_check(str);
 					else
-						mfwidth_val = num_check(str);
+						mfwidth_val = num_check(str); // maybe also set precision_val to -1
 					/* begin incrementing str */
 					if (*str == '*')
 						str++;
