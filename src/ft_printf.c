@@ -168,7 +168,7 @@ int	ft_printf(const char *s, ...)
 				// %
 				zeroflag_found = (*str == '0') ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
-				if (ft_isdigit(*str) || *str == '*')
+				if (*str != '0' && (ft_isdigit(*str) || *str == '*')) // we don't want 0 flag to be counted as one of these numbers
 				{
 					if (precisiondot_found)
 						precision_val = num_check(str);
