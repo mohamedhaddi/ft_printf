@@ -25,12 +25,13 @@ void	format(char specifier, int precision_val, t_arg arg)
 		/* precision ends here */
 
 		/* diuxX arg output begins here */
-		if (specifier == 'd' || specifier == 'i' || specifier == 'u')
+		if (specifier == 'd' || specifier == 'i')
 			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
+		if (specifier == 'u')
+			ft_putui_fd(arg.uintdata, 1);
 		//else if (specifier == 'x') how to print hexa????
 		//else // if specifier == X
 		/* diuxX arg output ends here */
-
 	}
 	else if (specifier == 's')
 		ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
