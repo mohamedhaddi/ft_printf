@@ -168,6 +168,7 @@ int	ft_printf(const char *s, ...)
 				// %
 				zeroflag_found = (*str == '0') ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
+				precision_val = (*str == '.' && !ft_isdigit(*(str + 1))) ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default
 				if (*str != '0' && (ft_isdigit(*str) || *str == '*')) // we don't want 0 flag to be counted as one of these numbers
 				{
 					if (precisiondot_found)
@@ -199,8 +200,10 @@ int	ft_printf(const char *s, ...)
 				{
 					if (precision_val > arg_len)
 						precision_val = precision_val - arg_len;
+					else if (precision_val < 0)
+						precision_val = -1;
 					else
-						precision_val = 0; // replacing -1 with 0 to avoid conflicts with cancelling the mfw, hopefully not gonna affect anything else
+						precision_val = 0; // replacing -1 with 0 to avoid conflicts with cancelling the mfw in case the precision val IS lower than arg_len but not a negative number
 				}
 				else if (specifier == 's')
 				{
