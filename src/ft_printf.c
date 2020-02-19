@@ -163,7 +163,7 @@ int	ft_printf(const char *s, ...)
 			/* data collection begins here */
 			while (*str && !isspecifier(*str))	// while the conversion specifier is not found, collect all data in between the '%' and the specifier.
 			{
-				minusflag_found = (*str == '-') ? 1 : minusflag_found;
+				minusflag_found = (*str == '-' && !precisiondot_found) ? 1 : minusflag_found;
 				// plus_found = (*str == '+') ? 1 : plus_found;
 				// %
 				zeroflag_found = (*str == '0') ? 1 : zeroflag_found;
@@ -171,7 +171,7 @@ int	ft_printf(const char *s, ...)
 				if (*str != '0' && (ft_isdigit(*str) || *str == '*')) // we don't want 0 flag to be counted as one of these numbers
 				{
 					if (precisiondot_found)
-						precision_val = num_check(str);
+						precision_val = *(str - 1) == '-' ? -1 : num_check(str);
 					else
 						mfwidth_val = num_check(str);
 					/* begin incrementing str */
@@ -200,7 +200,7 @@ int	ft_printf(const char *s, ...)
 					if (precision_val > arg_len)
 						precision_val = precision_val - arg_len;
 					else
-						precision_val = -1;
+						precision_val = 0; // replacing -1 with 0 to avoid conflicts with cancelling the mfw, hopefully not gonna affect anything else
 				}
 				else if (specifier == 's')
 				{
