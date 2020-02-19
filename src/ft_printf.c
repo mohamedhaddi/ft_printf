@@ -217,9 +217,9 @@ int	ft_printf(const char *s, ...)
 				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precisiondot_found) || minusflag_found)
 					padding_char = ' ';
 			}
-			if (mfwidth_val < arg_len) // setting the real mfwidth value depending on the arg and the precision
+			if (mfwidth_val < arg_len || precision_val < 0) // cancel the mfw if it's less than arg_len OR if the precision_val is negative
 				mfwidth_val = 0;
-			else if (mfwidth_val != 0)
+			else if (mfwidth_val != 0) // setting the real mfwidth value depending on the arg and the precision
 			{
 				if (precision_val >= 0)
 					mfwidth_val -= (mfwidth_val >= arg_len + precision_val) ? arg_len + precision_val : mfwidth_val;
