@@ -13,6 +13,8 @@ void	jusitfy(int mfwidth_val, char padding_char, char specifier, t_arg arg)
 
 void	format(char specifier, int precision_val, t_arg arg)
 {
+	int i;
+
 	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
 	{
 		if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0 && padding_char != '0')
@@ -20,14 +22,15 @@ void	format(char specifier, int precision_val, t_arg arg)
 		// if (plus_found)
 		//	ft_putchar_fd('+', 1);
 		/* precision begins here */
-		while (precision_val-- > 0)
-			ft_putchar_fd('0', 1);
+		i = precision_val;
+			while (i-- > 0)
+				ft_putchar_fd('0', 1);
 		/* precision ends here */
 
 		/* diuxX arg output begins here */
-		if (specifier == 'd' || specifier == 'i')
+		if ((specifier == 'd' || specifier == 'i') && (arg.intdata != 0 || !og_precision_is_zero)) // for some reason, when the d, i or u are equal to 0 AND the precision value is also 0, printf doesn't print the 0 (value of d, i or u).
 			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
-		if (specifier == 'u')
+		if ((specifier == 'u') && (arg.intdata != 0 || !og_precision_is_zero))
 			ft_putui_fd(arg.uintdata, 1);
 		//else if (specifier == 'x') how to print hexa????
 		//else // if specifier == X
@@ -132,6 +135,7 @@ void	initialize()
 	precisiondot_found = 0;
 	mfwidth_val = 0;
 	precision_val = -1; // if a precision is zero, it doesn't mean that there is no precision, it applies a precision of 0, that's why the intialization is set to negative, if there was no precision specified it will be set to negative.
+	og_precision_is_zero = 0; // patches the special case of when d, i or u are equal to 0 and the precision is also 0
 	padding_char = ' ';
 
 	arg.intdata = 0;
@@ -203,6 +207,8 @@ int	ft_printf(const char *s, ...)
 						precision_val = precision_val - arg_len;
 					else if (precision_val < 0)
 						precision_val = -1;
+					else if (precision_val == 0) // patches the special case of when d, i or u are equal to 0 and the precision is also 0
+						og_precision_is_zero = 1;
 					else
 						precision_val = 0; // replacing -1 with 0 to avoid conflicts with cancelling the mfw in case the precision val IS lower than arg_len but not a negative number
 				}
