@@ -172,7 +172,7 @@ int	ft_printf(const char *s, ...)
 				// %
 				zeroflag_found = (*str == '0' && !precisiondot_found) ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
-				precision_val = (*str == '.' && !ft_isdigit(*(str + 1))) ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default
+				precision_val = (*str == '.' && !ft_isdigit(*(str + 1)) && *(str + 1) != '-') ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default, unless there was a '-', then there is no precision.
 				if ((*str == '0' && precisiondot_found) || (*str != '0' && (ft_isdigit(*str) || *str == '*'))) // we don't want 0 flag to be counted as one of these numbers, unless the 0 was after the precision dot, then it's not a flag and we want go inside the condition.
 				{
 					if (precisiondot_found && *(str - 1) != '-') // if minus flag was found after the precision dot, then that value becomes the mfw value!
@@ -224,7 +224,7 @@ int	ft_printf(const char *s, ...)
 				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precisiondot_found) || minusflag_found)
 					padding_char = ' ';
 			}
-			if (mfwidth_val < arg_len || (precisiondot_found && precision_val < 0)) // cancel the mfw if it's less than arg_len OR if the precision_val is negative
+			if (mfwidth_val < arg_len) // cancel the mfw if it's less than arg_len // (OR if the precision_val is negative) --removed
 				mfwidth_val = 0;
 			else if (mfwidth_val != 0) // setting the real mfwidth value depending on the arg and the precision
 			{
