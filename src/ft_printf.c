@@ -3,6 +3,22 @@
 
 // don't forget to also handle %, search and test this case well
 
+int	patch() // patches the special case for when i/u/d is equal to 0 along with certain conditions, zero won't be shown and the justification will be affected as well.
+{
+	if ((specifier == 'd' || specifier == 'i' || specifier == 'u') && (arg.intdata == 0 && arg.uintdata == 0)
+			&& precisiondot_found && ((precision_val == 0 && og_precision_val == 0) || minus_right_after_dot))
+	{
+		if (mfwidth_val != 0)
+			mfwidth_val++;
+		if (og_mfw_val == 1)
+			mfwidth_val = og_mfw_val;
+		while (mfwidth_val-- > 0)
+			ft_putchar_fd(' ', 1);
+		return 1;
+	}
+	return 0;
+}
+
 void	jusitfy(int mfwidth_val, char padding_char, char specifier, t_arg arg)
 {
 	if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0 && padding_char == '0') // if the padding is 0 character, unlike the space character, we show the minus sign first when it's a negative number
@@ -30,7 +46,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 		/* diuxX arg output begins here */
 		if (specifier == 'd' || specifier == 'i')
 			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
-		if (specifier == 'u')
+		else if (specifier == 'u')
 			ft_putui_fd(arg.uintdata, 1);
 		//else if (specifier == 'x') how to print hexa????
 		//else // if specifier == X
@@ -134,6 +150,9 @@ void	initialize()
 	zeroflag_found = 0;
 	precisiondot_found = 0;
 	mfwidth_val = 0;
+	og_precision_val = 0;
+	og_mfw_val = 0;
+	minus_right_after_dot = 0;
 	precision_val = -1; // if a precision is zero, it doesn't mean that there is no precision, it applies a precision of 0, that's why the intialization is set to negative, if there was no precision specified it will be set to negative.
 	padding_char = ' ';
 
@@ -173,6 +192,7 @@ int	ft_printf(const char *s, ...)
 				zeroflag_found = (*str == '0' && !precisiondot_found) ? 1 : zeroflag_found;
 				precisiondot_found = (*str == '.') ? 1 : precisiondot_found;
 				precision_val = (*str == '.' && !ft_isdigit(*(str + 1)) && *(str + 1) != '-') ? 0 : precision_val; // if no precision was set after the dot, it's 0 by default, unless there was a '-', then there is no precision.
+				minus_right_after_dot = (*str == '.' && *(str + 1) == '-') ? 1 : minus_right_after_dot;
 				if ((*str == '0' && precisiondot_found) || (*str != '0' && (ft_isdigit(*str) || *str == '*'))) // we don't want 0 flag to be counted as one of these numbers, unless the 0 was after the precision dot, then it's not a flag and we want go inside the condition.
 				{
 					if (precisiondot_found && *(str - 1) != '-') // if minus flag was found after the precision dot, then that value becomes the mfw value!
@@ -198,6 +218,8 @@ int	ft_printf(const char *s, ...)
 			/* precision management begins here */
 			arg = get_arg(specifier);
 			arg_len = get_len(arg, specifier);
+			if (precision_val == 1)
+				og_precision_val = precision_val;
 			if (precisiondot_found)
 			{
 				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
@@ -224,6 +246,7 @@ int	ft_printf(const char *s, ...)
 				if (((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && precisiondot_found) || minusflag_found)
 					padding_char = ' ';
 			}
+			og_mfw_val = mfwidth_val; // before changing mfw value, let's keep the original (helps in patching a special case)
 			if (mfwidth_val < arg_len) // cancel the mfw if it's less than arg_len // (OR if the precision_val is negative) --removed
 				mfwidth_val = 0;
 			else if (mfwidth_val != 0) // setting the real mfwidth value depending on the arg and the precision
@@ -237,7 +260,9 @@ int	ft_printf(const char *s, ...)
 				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
 					mfwidth_val--;
 			}
-			if (!minusflag_found) // applying the right justification and then formatting
+			if (patch()) // patching a special case
+				;
+			else if (!minusflag_found) // applying the right justification and then formatting
 			{
 				/* justification begins here */
 				jusitfy(mfwidth_val, padding_char, specifier, arg);
