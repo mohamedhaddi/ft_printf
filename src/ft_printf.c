@@ -52,16 +52,12 @@ void	format(char specifier, int precision_val, t_arg arg)
 			ft_puthex_fd(arg.uintdata, specifier, 1);
 		/* diuxX arg output ends here */
 	}
+	else if (specifier == 'c')
+		ft_putchar_fd(arg.uintdata, 1);
 	else if (specifier == 's')
 		ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
-	else
-	{
-		/* c & p arg output begins here */
-		if (specifier == 'c')
-			ft_putchar_fd(arg.uintdata, 1);
-		// else if (specifier == 'p') how to print hexa????
-		/* c & p arg output ends here */
-	}
+	// else // if (specifier == 'p')
+		/* code */
 }
 
 t_arg	get_arg(char specifier)
@@ -249,14 +245,19 @@ int	ft_printf(const char *s, ...)
 			og_mfw_val = mfwidth_val; // before changing mfw value, let's keep the original (helps in patching a special case)
 			if (mfwidth_val < arg_len) // cancel the mfw if it's less than arg_len // (OR if the precision_val is negative) --removed
 				mfwidth_val = 0;
-			else if (mfwidth_val != 0) // setting the real mfwidth value depending on the arg and the precision
+			else if (mfwidth_val > 0) // setting the real mfwidth value depending on the arg and the precision
 			{
-				if (precision_val >= 0)
-					mfwidth_val -= (mfwidth_val >= arg_len + precision_val) ? arg_len + precision_val : mfwidth_val;
-				else
-					mfwidth_val -= (mfwidth_val >= arg_len) ? arg_len : mfwidth_val;
-				// if (plus_found)
-				// mfwidth_val--;
+				if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') // mfw value is affected by the precision's value only when the specifiers are d/i/u/x/X
+				{
+					if (precision_val >= 0)
+						mfwidth_val -= (mfwidth_val >= arg_len + precision_val) ? arg_len + precision_val : mfwidth_val;
+					else
+						mfwidth_val -= (mfwidth_val >= arg_len) ? arg_len : mfwidth_val;
+					// if (plus_found)
+					// mfwidth_val--;
+				}
+				else if (specifier == 'c')
+					mfwidth_val -= arg_len;
 				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
 					mfwidth_val--;
 			}
