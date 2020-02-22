@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:57:17 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/14 09:57:28 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/21 23:56:18 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int					ft_memcmp(const void *s1, const void *s2, size_t n);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+void				ft_puthex_fd(unsigned int n, char lettercase, int fd);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_substr(char const *s, unsigned int start, size_t len);

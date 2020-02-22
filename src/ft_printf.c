@@ -48,8 +48,8 @@ void	format(char specifier, int precision_val, t_arg arg)
 			ft_putui_fd(arg.intdata < 0 ? arg.intdata * -1 : arg.intdata, 1);
 		else if (specifier == 'u')
 			ft_putui_fd(arg.uintdata, 1);
-		//else if (specifier == 'x') how to print hexa????
-		//else // if specifier == X
+		else if (specifier == 'x' || specifier == 'X')
+			ft_puthex_fd(arg.uintdata, specifier, 1);
 		/* diuxX arg output ends here */
 	}
 	else if (specifier == 's')

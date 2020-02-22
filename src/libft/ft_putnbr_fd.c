@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2019/11/04 22:30:12 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/22 00:03:43 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int			len_count(int n)
 	return (n == 0) ? 1 : i;
 }
 
-static unsigned int	power(int len)
+static unsigned int	ten_power(int len)
 {
 	unsigned int	n;
 
@@ -49,7 +49,7 @@ void				ft_putnbr_fd(int n, int fd)
 		write(fd, "-", 1);
 	while (len > 0)
 	{
-		s = (nb / power(len)) % 10 + '0';
+		s = (nb / ten_power(len)) % 10 + '0';
 		write(fd, &s, 1);
 		len--;
 	}
