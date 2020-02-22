@@ -5,7 +5,7 @@
 
 int	patch() // patches the special case for when i/u/d is equal to 0 along with certain conditions, zero won't be shown and the justification will be affected as well.
 {
-	if ((specifier == 'd' || specifier == 'i' || specifier == 'u') && (arg.intdata == 0 && arg.uintdata == 0)
+	if ((specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X') && (arg.intdata == 0 && arg.uintdata == 0)
 			&& precisiondot_found && ((precision_val == 0 && og_precision_val == 0) || minus_right_after_dot))
 	{
 		if (mfwidth_val != 0)
