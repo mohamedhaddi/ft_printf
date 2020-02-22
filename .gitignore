@@ -1,4 +1,6 @@
 src/main.c
+src/main_old.c
+.vscode/*
 
 # Prerequisites
 *.d
