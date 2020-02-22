@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/22 01:00:33 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/22 14:47:28 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		ft_puthex_fd(unsigned int n, char lettercase, int fd)
 	while (len > 0)
 	{
 		remainder = (n / sixteen_power(len)) % 16; // calculates the modulo starting from the very left so we don't need to invert it
-		if (remainder || other_digit_found) // if 0 was found at the very beginning, don't print it
+		if ((remainder || n == 0) || other_digit_found) // if 0 was found at the very beginning, don't print it, unless it's 0 because n == 0
 		{
 			other_digit_found = 1;
 			if (remainder < 10)
