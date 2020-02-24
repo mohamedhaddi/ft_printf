@@ -1,4 +1,11 @@
 #!/bin/sh
+
+# HOW TO USE ME:
+	# Run this file with the desired specifier as argument, e.g.:
+	# ./check.sh d
+	# ./check.sh x
+	# ./check.sh c
+
 RED='\033[0;31m'
 GRN='\033[0;32m'
 NC='\033[0m'
