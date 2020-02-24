@@ -5,6 +5,10 @@
 	# ./check.sh d
 	# ./check.sh x
 	# ./check.sh c
+	# If you don't use libft, replace the command below:
+	# gcc -Wall -Werror -Wextra main.c *.a libft/*.a
+	# with just:
+	# gcc -Wall -Werror -Wextra main.c *.a
 
 RED='\033[0;31m'
 GRN='\033[0;32m'
