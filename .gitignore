@@ -1,5 +1,7 @@
-src/main.c
+# src/main.c
+# src/check.sh
 src/main_old.c
+src/*.txt
 .vscode/*
 
 # Prerequisites
