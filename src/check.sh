@@ -5,6 +5,7 @@ NC='\033[0m'
 
 if  [[ $1 = "d" || $1 = "i" || $1 = "u" || $1 = "x" || $1 = "X" || $1 = "c" ]]; then
 
+	make re
 	gcc -Wall -Werror -Wextra main.c *.a libft/*.a
 	./a.out $1 ft_printf > ft_printf_results.txt
 	./a.out $1 og_printf > printf_results.txt
