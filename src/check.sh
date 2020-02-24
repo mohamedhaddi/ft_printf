@@ -5,10 +5,18 @@
 	# ./check.sh d
 	# ./check.sh x
 	# ./check.sh c
-	# If you don't use libft, replace the command below:
-	# gcc -Wall -Werror -Wextra main.c *.a libft/*.a
-	# with just:
-	# gcc -Wall -Werror -Wextra main.c *.a
+
+# WARNING:
+	# You may need to apply the following changes to this and main.c file:
+	# 1. If you don't use libft, replace the command below:
+		# gcc -Wall -Werror -Wextra main.c *.a libft/*.a
+		# with just:
+		# gcc -Wall -Werror -Wextra main.c *.a
+		# and change main.c file accordingly by removing #include "libft/libft.h"
+
+	# 2. If your header file isn't named "libftprintf.h", replace:
+		# #include "libftprintf.h"
+		# with the right name of your header file.
 
 RED='\033[0;31m'
 GRN='\033[0;32m'
