@@ -29,7 +29,7 @@ void	jusitfy(int mfwidth_val, char padding_char, char specifier, t_arg arg)
 
 void	format(char specifier, int precision_val, t_arg arg)
 {
-	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X')
+	if (specifier == 'd' || specifier == 'i' || specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'p')
 	{
 		int i;
 
@@ -39,6 +39,11 @@ void	format(char specifier, int precision_val, t_arg arg)
 		//	ft_putchar_fd('+', 1);
 		/* precision begins here */
 		i = precision_val;
+		if (specifier == 'p')
+		{
+			ft_putstr_fd("0x", 1);
+			zerox_printed = 1;
+		}
 		while (i-- > 0)
 			ft_putchar_fd('0', 1);
 		/* precision ends here */
@@ -51,13 +56,16 @@ void	format(char specifier, int precision_val, t_arg arg)
 		else if (specifier == 'x' || specifier == 'X')
 			ft_puthex_fd(arg.uintdata, specifier, 1);
 		/* diuxX arg output ends here */
+		else if (specifier == 'p')
+		{
+			!zerox_printed ? ft_putstr_fd("0x", 1) : 0;
+			ft_putptr_fd((unsigned long)arg.voidpdata, 1);
+		}
 	}
 	else if (specifier == 'c')
 		ft_putchar_fd(arg.uintdata, 1);
-	else if (specifier == 's')
-		ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
-	// else // if (specifier == 'p')
-		/* code */
+	// else if (specifier == 's')
+	//	ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
 }
 
 t_arg	get_arg(char specifier)
@@ -67,9 +75,14 @@ t_arg	get_arg(char specifier)
 		arg.intdata = va_arg(ap, int);
 		return arg;
 	}
-	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c' || specifier == 'p')
+	else if (specifier == 'u' || specifier == 'x' || specifier == 'X' || specifier == 'c')
 	{
 		arg.uintdata = va_arg(ap, unsigned int);
+		return arg;
+	}
+	else if (specifier == 'p')
+	{
+		arg.voidpdata = va_arg(ap, void *);
 		return arg;
 	}
 	else // if (specifier == 's')
@@ -90,7 +103,7 @@ int	get_len(t_arg arg, char specifier)
 	else if (specifier == 'x' || specifier == 'X')
 		return ft_xlen(arg.uintdata);
 	else if (specifier == 'p')
-		return ft_xlen(arg.uintdata) + 2;
+		return ft_plen((unsigned long)arg.voidpdata) + 2;
 	else // if (specifier == 'c')
 		return 1;
 }
@@ -149,6 +162,7 @@ void	initialize()
 	og_precision_val = 0;
 	og_mfw_val = 0;
 	minus_right_after_dot = 0;
+	zerox_printed = 0;
 	precision_val = -1; // if a precision is zero, it doesn't mean that there is no precision, it applies a precision of 0, that's why the intialization is set to negative, if there was no precision specified it will be set to negative.
 	padding_char = ' ';
 
@@ -258,6 +272,8 @@ int	ft_printf(const char *s, ...)
 				}
 				else if (specifier == 'c')
 					mfwidth_val -= arg_len;
+				else if (specifier == 'p' && minus_right_after_dot)
+					mfwidth_val = 0;
 				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
 					mfwidth_val--;
 			}

@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:57:17 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/21 23:56:18 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/25 21:54:37 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int					ft_iswhitespace(int c);
 int					ft_lstsize(t_list *lst);
 int					ft_ulen(unsigned int n);
 int					ft_xlen(unsigned int n);
+int					ft_plen(unsigned long n);
 int					ft_atoi(const char *str);
 size_t				ft_strlen(const char *s);
 t_list				*ft_lstlast(t_list *lst);
@@ -51,6 +52,7 @@ char				*ft_strrchr(const char *s, int c);
 char				**ft_split(char const *s, char c);
 void				ft_putui_fd(unsigned int n, int fd);
 void				*ft_calloc(size_t count, size_t size);
+void				ft_putptr_fd(unsigned long n, int fd);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 void				ft_lstadd_back(t_list **alst, t_list *new);

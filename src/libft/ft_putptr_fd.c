@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthex_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putptr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/25 20:49:37 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/25 21:54:09 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
-static int	len_count(unsigned int n)
+static int	len_count(unsigned long n)
 {
 	int				i;
-	unsigned int	nb;
+	unsigned long	nb;
 
 	nb = n;
 	i = 0;
@@ -37,7 +37,7 @@ static unsigned long long	sixteen_power(int len)
 	return (n);
 }
 
-void ft_puthex_fd(unsigned int n, char lettercase, int fd)
+void ft_putptr_fd(unsigned long n, int fd)
 {
 	int				len;
 	char			remainder;
@@ -54,12 +54,7 @@ void ft_puthex_fd(unsigned int n, char lettercase, int fd)
 			if (remainder < 10)
 				ft_putchar_fd(48 + remainder, 1);
 			else
-			{
-				if (lettercase == 'x')
-					ft_putchar_fd(87 + remainder, fd);
-				else if (lettercase == 'X')
-					ft_putchar_fd(55 + remainder, fd);
-			}
+				ft_putchar_fd(87 + remainder, fd);
 		}
 		len--;
 	}

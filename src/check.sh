@@ -27,7 +27,7 @@ RED='\033[0;31m'
 GRN='\033[0;32m'
 NC='\033[0m'
 
-if  [[ $1 = "d" || $1 = "i" || $1 = "u" || $1 = "x" || $1 = "X" || $1 = "c" ]]; then
+if  [[ $1 = "d" || $1 = "i" || $1 = "u" || $1 = "x" || $1 = "X" || $1 = "c" || $1 = "p" ]]; then
 
 	make re
 	gcc -Wall -Werror -Wextra main.c *.a libft/*.a

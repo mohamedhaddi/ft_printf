@@ -2,6 +2,7 @@
 # src/check.sh
 src/main_old.c
 src/*.txt
+src/test.c
 .vscode/*
 
 # Prerequisites
