@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# DISCLAIMER
+	# This tester may include inputs that might result in unspecified, or even undefined behavior,
+	# basically some of those inputs results in warnings that your code isn't necessarily supposed
+	# to handle.
+
 # HOW TO USE ME:
 	# Run this file with the desired specifier as argument, e.g.:
 	# ./check.sh d
@@ -8,11 +13,11 @@
 
 # WARNING:
 	# You may need to apply the following changes to this and main.c file:
-	# 1. If you don't use libft, replace the command below:
+	# 1. If you don't use libft or the libft folder, replace the command below:
 		# gcc -Wall -Werror -Wextra main.c *.a libft/*.a
 		# with just:
 		# gcc -Wall -Werror -Wextra main.c *.a
-		# and change main.c file accordingly by removing #include "libft/libft.h"
+		# and change main.c file accordingly by removing/replacing #include "libft/libft.h"
 
 	# 2. If your header file isn't named "libftprintf.h", replace:
 		# #include "libftprintf.h"
