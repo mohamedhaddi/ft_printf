@@ -98,7 +98,7 @@ int	get_len(t_arg arg, char specifier)
 	else if (specifier == 'x' || specifier == 'X')
 		return ft_xlen(arg.uintdata);
 	else if (specifier == 'p')
-		return ft_plen((unsigned long)arg.voidpdata) + 2;
+		return arg.voidpdata == 0x0 ? 3 : ft_plen((unsigned long)arg.voidpdata) - 1;
 	else // if (specifier == 'c')
 		return 1;
 }
@@ -264,7 +264,7 @@ int	ft_printf(const char *s, ...)
 					// if (plus_found)
 					// mfwidth_val--;
 				}
-				else if (specifier == 'c')
+				else if (specifier == 'c' || specifier == 'p')
 					mfwidth_val -= arg_len;
 				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
 					mfwidth_val--;

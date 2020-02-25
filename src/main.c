@@ -75,11 +75,12 @@ int	main(int argc, char *argv[])
 {
 	int i = 0;
 	int j = 0;
+	int n = 5;
 	char *type = "diuxXcps";
 	int n1[5] = {0, 1, -1, -2147483648, 2147483647};
 	unsigned int n2[5] = {0, 1, 2, 16, 4294967295};
 	char c[5] = {'c', '%', '\\', '/', '*'};
-	int *p = (int *)0x7fff5597da78;
+	int *p = (int *)0x7fff5f14ca48; // 0x0;
 
 	setvbuf(stdout, NULL, _IONBF, 0);
 	if (argc == 3)
@@ -90,7 +91,8 @@ int	main(int argc, char *argv[])
 				break;
 			i++;
 		}
-		while (j < 5)
+		n = (type[i] == 'p') ? 1 : 5;
+		while (j < n)
 		{
 			check(type[i], mystrcat("this is just a %", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %-", type[i]), n1[j], n2[j], c[j], argv[2], p);
@@ -118,6 +120,17 @@ int	main(int argc, char *argv[])
 			check(type[i], mystrcat("this is just a %1", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %05", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %01", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %50", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %-50", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %050", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %-050", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %0-50", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.50", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.-50", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.50-", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.050", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.-050", type[i]), n1[j], n2[j], c[j], argv[2], p);
+			check(type[i], mystrcat("this is just a %.0-50", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %20.50", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %-20.50", type[i]), n1[j], n2[j], c[j], argv[2], p);
 			check(type[i], mystrcat("this is just a %020.50", type[i]), n1[j], n2[j], c[j], argv[2], p);
