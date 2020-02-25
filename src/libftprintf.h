@@ -23,7 +23,6 @@ int mfwidth_val; // about "mfwidth_found": it's not a thing
 				 // if we justified by 0 nothing will happen
 int og_mfw_val; // keeps the original mfw value, helps patching a special case
 int minus_right_after_dot; // helps patching a special case of 0
-int zerox_printed;
 va_list ap;
 char specifier;
 char padding_char;
