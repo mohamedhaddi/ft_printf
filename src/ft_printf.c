@@ -222,7 +222,13 @@ int	ft_printf(const char *s, ...)
 				break;
 
 			/* precision management begins here */
-			arg = get_arg(specifier);
+			if (specifier != '%')
+				arg = get_arg(specifier);
+			else // if specifier is %, we treat it like we treat a c
+			{
+				specifier = 'c';
+				arg.uintdata = '%';
+			}
 			arg_len = get_len(arg, specifier);
 			if (precision_val == 1)
 				og_precision_val = precision_val;

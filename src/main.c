@@ -38,6 +38,8 @@ void	test_ft_printf(char type, char *mainstr, int n1 , unsigned int n2, char c, 
 		ft_printf(mainstr, p);
 	else if (type == 's')
 		ft_printf(mainstr, s);
+	else if (type == '%')
+		ft_printf(mainstr);
 	write(1, "\n", 1);
 }
 
@@ -54,6 +56,8 @@ void	test_printf(char type, char *mainstr, int n1 , unsigned int n2, char c, int
 		printf(mainstr, p);
 	else if (type == 's')
 		printf(mainstr, s);
+	else if (type == '%')
+		printf(mainstr, NULL);
 	write(1, "\n", 1);
 }
 
@@ -70,6 +74,8 @@ void check(char type, char *mainstr, int n1, unsigned int n2, char c, char *whic
 		printf("With arg:\nint *p = %p\n", p);
 	else if (type == 's')
 		printf("With arg:\nchar *s = %s\n", s);
+	else if (type == '%')
+		printf("With arg:\nNo arg.\n");
 
 	if (strcmp(which_printf, "ft_printf"))
 		test_ft_printf(type, mainstr, n1, n2, c, p, s);
@@ -82,7 +88,7 @@ int	main(int argc, char *argv[])
 	int i = 0;
 	int j = 0;
 	int n = 5;
-	char *type = "diuxXcps";
+	char *type = "diuxXcps%";
 	int n1[5] = {0, 1, -1, -2147483648, 2147483647};
 	unsigned int n2[5] = {0, 1, 2, 16, 4294967295};
 	char c[5] = {'c', '%', '\\', '/', '*'};
