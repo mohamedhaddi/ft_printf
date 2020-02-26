@@ -138,7 +138,10 @@ int num_check(char *str) // checks the nature of the precision or mfw's values a
 		else if (num == 0 && !precisiondot_found)
 			zeroflag_found = 1;
 		else if (precisiondot_found && num < 0)
+		{
 			num = -1; // if the - sign is present in the precision value, then we cancel the precision.
+			precisiondot_found = 0;
+		}
 	}
 	else // if the value is a normal number, loop through it all and convert it to int
 	{

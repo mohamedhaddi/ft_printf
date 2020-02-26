@@ -10,6 +10,9 @@
 	# ./check.sh d
 	# ./check.sh x
 	# ./check.sh c
+	# Or if you want to test the *, run:
+	# ./check.sh asterisk (DISCLAIMER: it's an incomplete, separate testing file
+	# that only test the * with the d and s specifiers, and the output is unclear.)
 
 # WARNING:
 	# You may need to apply the following changes to this and main.c file:
@@ -27,12 +30,18 @@ RED='\033[0;31m'
 GRN='\033[0;32m'
 NC='\033[0m'
 
-if  [[ $1 = "d" || $1 = "i" || $1 = "u" || $1 = "x" || $1 = "X" || $1 = "c" || $1 = "p" || $1 = "s" || $1 = "%" ]]; then
+if  [[ $1 = "d" || $1 = "i" || $1 = "u" || $1 = "x" || $1 = "X" || $1 = "c" || $1 = "p" || $1 = "s" || $1 = "%" || $1 = "asterisk" ]]; then
 
 	make re
-	gcc -Wall -Werror -Wextra main.c *.a libft/*.a
-	./a.out $1 ft_printf > ft_printf_results.txt
-	./a.out $1 og_printf > printf_results.txt
+	if [[ $1 != "asterisk" ]]; then
+		gcc -Wall -Werror -Wextra main.c *.a libft/*.a
+		./a.out $1 ft_printf > ft_printf_results.txt
+		./a.out $1 og_printf > printf_results.txt
+	else
+		gcc -Wall -Werror -Wextra test_asterisk.c *.a libft/*.a
+		./a.out ft_printf > ft_printf_results.txt
+		./a.out og_printf > printf_results.txt
+	fi
 
 	diff ft_printf_results.txt printf_results.txt > diff.txt
 	printf "${RED}You have "
