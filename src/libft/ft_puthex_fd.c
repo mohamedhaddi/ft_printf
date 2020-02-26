@@ -6,12 +6,12 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/25 20:49:37 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 16:15:47 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
+
 static int	len_count(unsigned int n)
 {
 	int				i;

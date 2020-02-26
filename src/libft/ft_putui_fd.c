@@ -6,11 +6,13 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/19 14:33:48 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 16:09:25 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+extern int counter;
 
 static int			len_count(unsigned int n)
 {
@@ -47,6 +49,7 @@ void				ft_putui_fd(unsigned int n, int fd)
 	{
 		s = (n / power(len)) % 10 + '0';
 		write(fd, &s, 1);
+		counter++;
 		len--;
 	}
 }

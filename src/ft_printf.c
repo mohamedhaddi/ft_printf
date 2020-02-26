@@ -59,7 +59,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 	//ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val >= 0 ? precision_val : arg_len), 1); // s output. memory leak...
 	else //if (specifier == 'p')
 	{
-		ft_putstr_fd("0x", 1);
+		ft_putnstr_fd("0x", 2, 1);
 		ft_putptr_fd((unsigned long)arg.voidpdata, 1);
 	}
 }
@@ -184,7 +184,6 @@ int	ft_printf(const char *s, ...)
 	str = (char *)s;
 	while (*str)
 	{
-		counter++;
 		/* all of the following code will be in a separate function
 		 * containing calls to more separate functions */
 
