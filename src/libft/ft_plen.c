@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/25 21:25:04 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 15:31:23 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int	ft_plen(unsigned long n)
 	int				i;
 	unsigned long	nb;
 
-	nb = n;
 	i = 0;
+	nb = n;
 	while (nb > 0)
 	{
-		nb = nb / 10;
+		nb = nb / 16;
 		i++;
 	}
 	return (n == 0 ? 1 : i);

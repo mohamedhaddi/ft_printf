@@ -100,7 +100,7 @@ int	get_len(t_arg arg, char specifier)
 	else if (specifier == 'x' || specifier == 'X')
 		return ft_xlen(arg.uintdata);
 	else if (specifier == 'p')
-		return arg.voidpdata == 0x0 ? 3 : ft_plen((unsigned long)arg.voidpdata) - 1;
+		return ft_plen((unsigned long)arg.voidpdata) + 2;
 	else // if (specifier == 'c')
 		return 1;
 }
@@ -320,8 +320,13 @@ int	ft_printf(const char *s, ...)
 				ft_putchar_fd(*(str++), 1);
 			else // if *str is %, but the next character is neither a flag nor a specifier
 			{
-				*(str + 1) ? ft_putchar_fd(*(++str), 1) : 0; // if next character isn't nul, increment to it and print it.
-				str++;
+				if (*(str + 1)) // if the next character is not null
+				{
+					str++; // increment to it
+					while (*str == ' ') // if it's spaces and there are more spaces after the previous %, skip them (this is a case)
+						str++;
+					ft_putchar_fd(*(str++), 1); // print the current character, and increment
+				}
 			}
 		}
 
