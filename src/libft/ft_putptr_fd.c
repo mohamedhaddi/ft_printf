@@ -6,22 +6,22 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/25 21:54:09 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 17:17:31 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-static int	len_count(unsigned long n)
+
+static int len_count(unsigned long long n)
 {
 	int				i;
-	unsigned long	nb;
+	unsigned long long	nb;
 
 	nb = n;
 	i = 0;
 	while (nb > 0)
 	{
-		nb = nb / 10;
+		nb = nb / 16;
 		i++;
 	}
 	return (n == 0 ? 1 : i);
@@ -37,7 +37,7 @@ static unsigned long long	sixteen_power(int len)
 	return (n);
 }
 
-void ft_putptr_fd(unsigned long n, int fd)
+void ft_putptr_fd(unsigned long long n, int fd)
 {
 	int				len;
 	char			remainder;

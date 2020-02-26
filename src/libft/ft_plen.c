@@ -6,16 +6,16 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/26 15:31:23 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 17:10:21 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_plen(unsigned long n)
+int	ft_plen(unsigned long long n)
 {
 	int				i;
-	unsigned long	nb;
+	unsigned long long	nb;
 
 	i = 0;
 	nb = n;

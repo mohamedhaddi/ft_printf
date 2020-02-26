@@ -3,6 +3,7 @@
 src/main_old.c
 src/*.txt
 src/test.c
+src/ft_printf_tester/*
 .vscode/*
 
 # Prerequisites

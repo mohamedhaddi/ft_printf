@@ -60,7 +60,7 @@ void	format(char specifier, int precision_val, t_arg arg)
 	else //if (specifier == 'p')
 	{
 		ft_putnstr_fd("0x", 2, 1);
-		ft_putptr_fd((unsigned long)arg.voidpdata, 1);
+		ft_putptr_fd((unsigned long long)arg.voidpdata, 1);
 	}
 }
 
@@ -100,7 +100,7 @@ int	get_len(t_arg arg, char specifier)
 	else if (specifier == 'x' || specifier == 'X')
 		return ft_xlen(arg.uintdata);
 	else if (specifier == 'p')
-		return ft_plen((unsigned long)arg.voidpdata) + 2;
+		return ft_plen((unsigned long long)arg.voidpdata) + 2;
 	else // if (specifier == 'c')
 		return 1;
 }

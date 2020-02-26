@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/26 16:15:47 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 17:19:05 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	len_count(unsigned int n)
 	i = 0;
 	while (nb > 0)
 	{
-		nb = nb / 10;
+		nb = nb / 16;
 		i++;
 	}
 	return (n == 0 ? 1 : i);
