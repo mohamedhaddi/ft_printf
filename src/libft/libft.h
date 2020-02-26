@@ -6,7 +6,7 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:57:17 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/25 21:54:37 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/26 00:55:11 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void				ft_putui_fd(unsigned int n, int fd);
 void				*ft_calloc(size_t count, size_t size);
 void				ft_putptr_fd(unsigned long n, int fd);
 void				*ft_memset(void *b, int c, size_t len);
+void				ft_putnstr_fd(char *s, size_t n, int fd);
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 void				ft_lstadd_back(t_list **alst, t_list *new);
 void				*ft_memchr(const void *s, int c, size_t n);

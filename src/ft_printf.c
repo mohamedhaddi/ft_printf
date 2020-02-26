@@ -54,8 +54,9 @@ void	format(char specifier, int precision_val, t_arg arg)
 	}
 	else if (specifier == 'c')
 		ft_putchar_fd(arg.uintdata, 1);
-	// else if (specifier == 's')
-	//	ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val > 0 ? precision_val : arg_len), 1); // s output. memory leak...
+	else if (specifier == 's')
+		ft_putnstr_fd(arg.stringdata, precision_val >= 0 ? precision_val : arg_len, 1);
+	//ft_putstr_fd(ft_substr(arg.stringdata, 0, precision_val >= 0 ? precision_val : arg_len), 1); // s output. memory leak...
 	else //if (specifier == 'p')
 	{
 		ft_putstr_fd("0x", 1);
@@ -83,6 +84,7 @@ t_arg	get_arg(char specifier)
 	else // if (specifier == 's')
 	{
 		arg.stringdata = va_arg(ap, char *);
+		arg.stringdata = !arg.stringdata ? "(null)" : arg.stringdata;
 		return arg;
 	}
 }
@@ -239,6 +241,8 @@ int	ft_printf(const char *s, ...)
 				{
 					if (precision_val >= arg_len)
 						precision_val = -1;
+					else
+						arg_len = precision_val;
 				} // and other specifiers' precision is undefined behavior
 			}
 			/* precision management ends here */
@@ -264,9 +268,11 @@ int	ft_printf(const char *s, ...)
 					// if (plus_found)
 					// mfwidth_val--;
 				}
-				else if (specifier == 'c' || specifier == 'p')
+				else if (specifier == 'c' || specifier == 'p' || specifier == 's')
 					mfwidth_val -= arg_len;
 				if ((specifier == 'd' || specifier == 'i') && arg.intdata < 0)
+					mfwidth_val--;
+				if (specifier == 's' && minus_right_after_dot) // weird case in s, that is normally an "undefined behavior" but let's handle it anyway because it seems handleable
 					mfwidth_val--;
 			}
 			if (patch()) // patching a special case
