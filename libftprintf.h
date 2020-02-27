@@ -1,34 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/27 02:08:23 by mhaddi            #+#    #+#             */
+/*   Updated: 2020/02/27 02:39:01 by mhaddi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIBFTPRINTF_H
 # define LIBFTPRINTF_H
 
 # include <stdarg.h>
 
-typedef struct s_arg {
-	int intdata;
-	unsigned int uintdata;
-	char *stringdata;
-	void *voidpdata;
-} t_arg;
-t_arg arg;
-int minusflag_found;
-// int plus_found;
-int zeroflag_found;
-int precisiondot_found;
-int precision_val;
-int og_precision_val; // keeps the original mfw value, helps patching a special case
-int mfwidth_val; // about "mfwidth_found": it's not a thing
-				 // because if mfwidth_val > 0 : it's found
-				 // but if it was = 0, it's considered as
-				 // not found since 0 is default anyway:
-				 // if we justified by 0 nothing will happen
-int og_mfw_val; // keeps the original mfw value, helps patching a special case
-int minus_right_after_dot; // helps patching a special case of 0
-va_list ap;
-char specifier;
-char padding_char;
-int arg_len; // how many digits or characters the argument has
-int counter;
+typedef struct	s_arg {
+	int				idata;
+	unsigned int	uidata;
+	char			*sdata;
+	void			*vpdata;
+}				t_arg;
+t_arg g_arg;
 
-int	ft_printf(const char *s, ...);
+char			g_sp;
+char			*g_str;
+int				g_counter;
+int				g_arg_len;
+int				g_prec_val;
+int				g_zeroflag;
+char			g_pad_char;
+int				g_og_mfw_val;
+int				g_og_prec_val;
+int				g_minus_a_dot;
+int				g_mfwidth_val;
+int				g_minusflag_found;
+int				g_precisiondot_found;
+
+int				ft_printf(const char *s, ...);
+void			initialize_all(void);
+void			loop_through(va_list ap);
+int				isspecifier(char c);
+int				isflag(char c);
+void			format(va_list ap);
+void			collect_data(va_list ap);
+int				num_check(va_list ap);
+void			calc_precision(va_list ap);
+t_arg			get_arg(va_list ap);
+int				get_len(void);
+int				is_di(char c);
+int				isdiuxx(char c);
+void			calc_mfw(void);
+int				patch(void);
+void			jusitfy(void);
+void			print(void);
 
 #endif

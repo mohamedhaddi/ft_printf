@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_plen.c                                          :+:      :+:    :+:   */
+/*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/27 02:16:08 by mhaddi           ###   ########.fr       */
+/*   Created: 2020/02/27 00:31:34 by mhaddi            #+#    #+#             */
+/*   Updated: 2020/02/27 01:47:33 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
 
-int	ft_plen(unsigned long long n)
+void	initialize_all(void)
 {
-	int					i;
-	unsigned long long	nb;
-
-	i = 0;
-	nb = n;
-	while (nb > 0)
-	{
-		nb = nb / 16;
-		i++;
-	}
-	return (n == 0 ? 1 : i);
+	g_minusflag_found = 0;
+	g_zeroflag = 0;
+	g_precisiondot_found = 0;
+	g_mfwidth_val = 0;
+	g_og_prec_val = 0;
+	g_og_mfw_val = 0;
+	g_minus_a_dot = 0;
+	g_prec_val = -1;
+	g_pad_char = ' ';
+	g_arg.idata = 0;
+	g_arg.uidata = 0;
+	g_arg.sdata = 0;
+	g_arg.vpdata = 0;
 }

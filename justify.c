@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_plen.c                                          :+:      :+:    :+:   */
+/*   justify.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/27 02:16:08 by mhaddi           ###   ########.fr       */
+/*   Created: 2020/02/27 00:39:43 by mhaddi            #+#    #+#             */
+/*   Updated: 2020/02/27 01:47:29 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
+#include "libft/libft.h"
 
-int	ft_plen(unsigned long long n)
+void	jusitfy(void)
 {
-	int					i;
-	unsigned long long	nb;
-
-	i = 0;
-	nb = n;
-	while (nb > 0)
-	{
-		nb = nb / 16;
-		i++;
-	}
-	return (n == 0 ? 1 : i);
+	if ((g_sp == 'd' || g_sp == 'i') && g_arg.idata < 0 &&
+	g_pad_char == '0')
+		ft_putchar_fd('-', 1);
+	while (g_mfwidth_val-- > 0)
+		ft_putchar_fd(g_pad_char, 1);
 }

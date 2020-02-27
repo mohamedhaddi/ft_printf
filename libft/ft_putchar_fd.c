@@ -6,16 +6,16 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 15:41:34 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/26 16:14:29 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/27 02:23:15 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-extern int counter;
+extern int	g_counter;
 
-void	ft_putchar_fd(char c, int fd)
+void		ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
-	counter++;
+	g_counter++;
 }

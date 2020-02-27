@@ -6,13 +6,13 @@
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:02:52 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/26 17:19:05 by mhaddi           ###   ########.fr       */
+/*   Updated: 2020/02/27 02:18:59 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	len_count(unsigned int n)
+static int					len_count(unsigned int n)
 {
 	int				i;
 	unsigned int	nb;
@@ -37,7 +37,8 @@ static unsigned long long	sixteen_power(int len)
 	return (n);
 }
 
-void ft_puthex_fd(unsigned int n, char lettercase, int fd)
+void						ft_puthex_fd(unsigned int n,
+							char lettercase, int fd)
 {
 	int				len;
 	char			remainder;
@@ -47,8 +48,8 @@ void ft_puthex_fd(unsigned int n, char lettercase, int fd)
 	len = len_count(n);
 	while (len > 0)
 	{
-		remainder = (n / sixteen_power(len)) % 16; // calculates the modulo starting from the very left so we don't need to invert it
-		if ((remainder || n == 0) || other_digit_found) // if 0 was found at the very beginning, don't print it, unless it's 0 because n == 0
+		remainder = (n / sixteen_power(len)) % 16;
+		if ((remainder || n == 0) || other_digit_found)
 		{
 			other_digit_found = 1;
 			if (remainder < 10)

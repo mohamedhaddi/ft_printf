@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_plen.c                                          :+:      :+:    :+:   */
+/*   format.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhaddi <mhaddi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/23 16:46:50 by mhaddi            #+#    #+#             */
-/*   Updated: 2020/02/27 02:16:08 by mhaddi           ###   ########.fr       */
+/*   Created: 2020/02/27 00:38:42 by mhaddi            #+#    #+#             */
+/*   Updated: 2020/02/27 02:39:55 by mhaddi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
+#include "libft/libft.h"
 
-int	ft_plen(unsigned long long n)
+void	format(va_list ap)
 {
-	int					i;
-	unsigned long long	nb;
-
-	i = 0;
-	nb = n;
-	while (nb > 0)
+	g_str++;
+	collect_data(ap);
+	if (!*g_str)
+		return ;
+	calc_precision(ap);
+	calc_mfw();
+	if (patch())
+		;
+	else if (!g_minusflag_found)
 	{
-		nb = nb / 16;
-		i++;
+		jusitfy();
+		print();
 	}
-	return (n == 0 ? 1 : i);
+	else
+	{
+		print();
+		jusitfy();
+	}
+	g_str++;
 }

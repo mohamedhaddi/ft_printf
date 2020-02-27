@@ -1,9 +1,9 @@
-# src/main.c
-# src/check.sh
-src/main_old.c
-src/*.txt
-src/test.c
-src/ft_printf_tester/*
+main.c
+check.sh
+main_old.c
+*.txt
+test.c
+ft_printf_tester/*
 .vscode/*
 
 # Prerequisites

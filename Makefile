@@ -1,7 +1,7 @@
 NAME = libftprintf.a
 CFLAGS = -Wall -Werror -Wextra
-SRC = ft_printf.c libftprintf.h
-OBJ = ft_printf.o
+SRC = ft_printf.c initialize.c collect.c calculate.c justify.c format.c print.c predicates.c patch.c libftprintf.h
+OBJ = ft_printf.o initialize.o collect.o calculate.o justify.o format.o print.o predicates.o patch.o
 # BSRC =
 # BOBJ =
 
