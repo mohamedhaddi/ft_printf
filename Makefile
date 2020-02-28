@@ -1,9 +1,19 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mhaddi <marvin@42.fr>                      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/02/28 23:33:17 by mhaddi            #+#    #+#              #
+#    Updated: 2020/02/28 23:33:19 by mhaddi           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libftprintf.a
 CFLAGS = -Wall -Werror -Wextra
 SRC = ft_printf.c initialize.c collect.c calculate.c justify.c format.c print.c predicates.c patch.c libftprintf.h
 OBJ = ft_printf.o initialize.o collect.o calculate.o justify.o format.o print.o predicates.o patch.o
-# BSRC =
-# BOBJ =
 
 all: $(NAME)
 
@@ -22,6 +32,3 @@ fclean: clean
 
 re: fclean all
 
-# bonus: $(BSRC)
-# 	gcc $(CFLAGS) -c $^
-# 	ar rcs $(NAME) $(BOBJ)
