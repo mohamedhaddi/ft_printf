@@ -11,24 +11,29 @@
 # **************************************************************************** #
 
 NAME = libftprintf.a
+LFT = libft/libft.a
 CFLAGS = -Wall -Werror -Wextra
-SRC = ft_printf.c initialize.c collect.c calculate.c justify.c format.c print.c predicates.c patch.c libftprintf.h
+SRC = ft_printf.c initialize.c collect.c calculate.c justify.c format.c print.c predicates.c patch.c
 OBJ = ft_printf.o initialize.o collect.o calculate.o justify.o format.o print.o predicates.o patch.o
 
 all: $(NAME)
 
-$(NAME): $(SRC)
-	(cd libft; make)
-	gcc $(CFLAGS) -c $^
+$(LFT):
+	$(MAKE) -C libft/
+	cp $(LFT) ./$(NAME)
+
+$(NAME): $(LFT)
+	gcc $(CFLAGS) -c $(SRC)
 	ar rcs $@ $(OBJ)
 
 clean:
-	(cd libft; make clean)
+	$(MAKE) -C libft/ clean
 	rm -f $(OBJ) $(BOBJ)
 
 fclean: clean
-	(cd libft; make fclean)
+	$(MAKE) -C libft/ fclean
 	rm -f $(NAME)
 
 re: fclean all
 
+.PHONY: all clean fclean re
